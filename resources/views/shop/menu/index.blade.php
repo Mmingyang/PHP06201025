@@ -50,7 +50,14 @@
         <tr>
             <td>{{$menu->id}}</td>
             <td>{{$menu->goods_name}}</td>
-            <td><img src="/{{$menu->goods_img}}" width="50" alt=""></td>
+
+            <td>
+                @if($menu->goods_img)
+                    <img src="{{$menu->goods_img}}?x-oss-process=image/resize,m_fill,w_100,h_80">
+                    {{--<img src="{{env("ALIYUN_OSS_URL").$menu->goods_img}}?x-oss-process=image/resize,m_fill,w_80,h_80">--}}
+                @endif
+            </td>
+
             <td>{{$menu->rating}}</td>
             <td>{{$menu->shop_id}}</td>
             <td>{{$menu->menu_cate_id}}</td>
@@ -66,6 +73,7 @@
 
     </table>
 
+    {{$goods->links()}}
 
 @endsection
 

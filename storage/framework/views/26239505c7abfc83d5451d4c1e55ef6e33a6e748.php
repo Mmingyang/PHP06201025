@@ -35,7 +35,15 @@
                         <li><a href="#">其它</a></li>
                     </ul>
                 </li>
-
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">活动列表<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?php echo e(route("shop.event.index")); ?>">活动列表</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">其它</a></li>
+                    </ul>
+                </li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">

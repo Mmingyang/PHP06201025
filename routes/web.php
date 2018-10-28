@@ -46,6 +46,13 @@ Route::domain("admin.elm.com")->namespace("Admin")->group(function (){
     Route::any("shop/edit/{id}","ShopController@edit")->name("admin.shop.edit");
     Route::get("shop/del/{id}","ShopController@del")->name("admin.shop.del");
     Route::any("shop/shen/{id}","ShopController@shen")->name("admin.shop.shen");
+
+
+    Route::get("event/index","EventController@index")->name("admin.event.index");
+    Route::any("event/add","EventController@add")->name("admin.event.add");
+    Route::any("event/edit/{id}","EventController@edit")->name("admin.event.edit");
+    Route::get("event/del/{id}","EventController@del")->name("admin.event.del");
+
 });
 
 
@@ -80,5 +87,10 @@ Route::domain("shop.elm.com")->namespace("Shop")->group(function (){
     Route::any("menu/add","MenuController@add")->name("shop.menu.add");
     Route::any("menu/edit/{id}","MenuController@edit")->name("shop.menu.edit");
     Route::get("menu/del/{id}","MenuController@del")->name("shop.menu.del");
+    Route::any("menu/upload","MenuController@upload")->name("shop.menu.upload");
+
+
+    Route::get("event/index","EventController@index")->name("shop.event.index");
+    Route::get("event/ck/{id}","EventController@ck")->name("shop.event.ck");
 
 });

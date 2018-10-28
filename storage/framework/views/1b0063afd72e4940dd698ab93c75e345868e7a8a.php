@@ -21,6 +21,7 @@
 
 <?php echo $__env->make("admin.layouts._header", array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
+<?php echo $__env->make('vendor.ueditor.assets', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 <?php echo $__env->make("admin.layouts._error", array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 <div class="container-fluid">
 <?php echo $__env->make("admin.layouts._msg", array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

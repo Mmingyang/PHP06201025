@@ -28,5 +28,10 @@ class Shopcategory extends Model
     //
     protected $fillable = ['name','img','status','sort'];
 
+    public function shops()
+    {
+        return $this->hasMany(Shop::class,"shop_cate_id");
+    }
+
 
 }

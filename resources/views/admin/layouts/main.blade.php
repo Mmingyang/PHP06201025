@@ -20,7 +20,8 @@
 <body>
 {{--引入头部--}}
 @include("admin.layouts._header")
-
+{{--编辑器--}}
+@include('vendor.ueditor.assets')
 @include("admin.layouts._error")
 <div class="container-fluid">
 @include("admin.layouts._msg")

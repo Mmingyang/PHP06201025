@@ -8,6 +8,7 @@ use App\Models\Shop;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class MenuController extends BaseController
 {
@@ -21,10 +22,10 @@ class MenuController extends BaseController
 //        dd($mc);
         $url=$request->query();
 
-        $cateId=$request->get("good_id");
-        $keyword=$request->get("keyword");
-        $min = $request->get("minPrice");
-        $max = $request->get("maxPrice");
+        $cateId=$request->input("good_id");
+        $keyword=$request->input("keyword");
+        $min = $request->input("minPrice");
+        $max = $request->input("maxPrice");
 
         $query=Menu::orderBy("id")->where("shop_id",$id);
 
@@ -42,11 +43,12 @@ class MenuController extends BaseController
 
             $query->where("goods_money",">=",$min);
         }
-        $goods=$query->paginate(0);
+        $goods=$query->paginate(1);
 
+        $cates=MenuCategory::where("shop_id",Auth::user()->shop->id)->get();
+//        dd($cates);
 
-
-        return view("shop.menu.index",compact("mc","goods","url"));
+        return view("shop.menu.index",compact("mc","goods","url","cates"));
 
     }
 
@@ -80,10 +82,6 @@ class MenuController extends BaseController
 
             $data=$request->post();
 //            dd($data);
-            $file = $request->file("goods_img");
-//            dd($file);
-            $data['goods_img']=$file->store("goods_img","image");
-//            dd($data["goods_img"]);
             $data['shop_id']=Auth::id();
 //            dd($data["shop_id"]);
             if(Menu::create($data)){
@@ -94,6 +92,7 @@ class MenuController extends BaseController
 
         }
 
+        $cates=MenuCategory::where("shop_id",Auth::user()->shop->id)->get();
         return view("shop.menu.add",compact("fl","menus"));
 
     }
@@ -126,10 +125,6 @@ class MenuController extends BaseController
 
             $data=$request->post();
 //            dd($data);
-            $file = $request->file("goods_img");
-//            dd($file);
-            $data['goods_img']=$file->store("goods_img","image");
-//            dd($data["goods_img"]);
             $data['shop_id']=Auth::id();
 
             if($menu->update($data)){
@@ -142,8 +137,6 @@ class MenuController extends BaseController
 
             }
 
-
-
         }
 
         return view("shop.menu.edit",compact("fl","menus","menu"));
@@ -155,10 +148,39 @@ class MenuController extends BaseController
     {
         $menu=Menu::find($id);
 
+        $img=$menu->goods_img;
+//        dd($img);
+
+        Storage::delete($img);
+
         if($menu->delete()){
 
             return redirect()->route("shop.menu.index")->with("success","删除成功");
 
+        }
+
+    }
+
+    public function upload(Request $request)
+    {
+        //处理上传
+        //dd($request->file("file"));
+
+        $file=$request->file("file");
+//        dd($file);
+
+        if ($file){
+            //上传
+            $url=$file->store("menu_cate");
+
+            /// var_dump($url);
+            //得到真实地址  加 http的址
+//            $url=Storage::url($url);
+
+            $data['url']=env("ALIYUN_OSS_URL").$url;
+
+            return $data;
+            ///var_dump($url);
         }
 
     }

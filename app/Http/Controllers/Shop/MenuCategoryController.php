@@ -16,7 +16,8 @@ class MenuCategoryController extends BaseController
     {
         $shops=Shop::all();
 //        dd($shops);
-        $menus=MenuCategory::all();
+        $menus=MenuCategory::where("shop_id",Auth::user()->shop->id)->get();
+
 
         return view("shop/menucategory/index",compact("menus","shops"));
     }
@@ -29,19 +30,16 @@ class MenuCategoryController extends BaseController
         if($request->isMethod("post")){
 
             $this->validate($request, [
-                "name" => "required|unique:menu_categories",
+                "name" => "required",
                 "type_id" => "required",
                 "description"=>"required",
-                "is_selected"=>"required",
             ],[
                 "type_id.required"=>"菜品编号不能为空",
                 "description.required"=>"描述不能为空",
-                "is_selected.required"=>"请选择默认分类",
             ]);
 
             $data=$request->post();
             $data['shop_id']=Auth::id();
-
 
 //            dd($data);
             if(MenuCategory::create($data)){
@@ -72,11 +70,9 @@ class MenuCategoryController extends BaseController
                 "name" => "required",
                 "type_id" => "required",
                 "description"=>"required",
-                "is_selected"=>"required",
             ],[
                 "type_id.required"=>"菜品编号不能为空",
                 "description.required"=>"描述不能为空",
-                "is_selected.required"=>"请选择默认分类",
             ]);
 
             $data=$request->post();

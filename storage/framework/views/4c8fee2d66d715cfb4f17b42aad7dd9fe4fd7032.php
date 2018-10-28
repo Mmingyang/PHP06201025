@@ -49,7 +49,14 @@
         <tr>
             <td><?php echo e($menu->id); ?></td>
             <td><?php echo e($menu->goods_name); ?></td>
-            <td><img src="/<?php echo e($menu->goods_img); ?>" width="50" alt=""></td>
+
+            <td>
+                <?php if($menu->goods_img): ?>
+                    <img src="<?php echo e($menu->goods_img); ?>?x-oss-process=image/resize,m_fill,w_100,h_80">
+                    
+                <?php endif; ?>
+            </td>
+
             <td><?php echo e($menu->rating); ?></td>
             <td><?php echo e($menu->shop_id); ?></td>
             <td><?php echo e($menu->menu_cate_id); ?></td>
@@ -64,6 +71,8 @@
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
     </table>
+
+    <?php echo e($goods->links()); ?>
 
 
 <?php $__env->stopSection(); ?>

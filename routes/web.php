@@ -31,6 +31,8 @@ Route::domain("admin.elm.com")->namespace("Admin")->group(function (){
     Route::any("admin/edit/{id}","AdminController@edit")->name("admin.admin.edit");
     Route::get("admin/del/{id}","AdminController@del")->name("admin.admin.del");
     Route::get("admin/logout","AdminController@logout")->name("admin.admin.logout");
+    Route::any("admin/xg/","AdminController@xg")->name("admin.admin.xg");
+
 
 
     Route::get("user/index","UserController@index")->name("admin.user.index");
@@ -65,5 +67,18 @@ Route::domain("shop.elm.com")->namespace("Shop")->group(function (){
     Route::any("shop/edit/{id}","ShopController@edit")->name("shop.shop.edit");
     Route::get("shop/del/{id}","ShopController@del")->name("shop.shop.del");
 
+
+
+    Route::get("menucategory/index","MenuCategoryController@index")->name("shop.menucategory.index");
+    Route::any("menucategory/add","MenuCategoryController@add")->name("shop.menucategory.add");
+    Route::any("menucategory/edit/{id}","MenuCategoryController@edit")->name("shop.menucategory.edit");
+    Route::get("menucategory/del/{id}","MenuCategoryController@del")->name("shop.menucategory.del");
+
+
+
+    Route::get("menu/index","MenuController@index")->name("shop.menu.index");
+    Route::any("menu/add","MenuController@add")->name("shop.menu.add");
+    Route::any("menu/edit/{id}","MenuController@edit")->name("shop.menu.edit");
+    Route::get("menu/del/{id}","MenuController@del")->name("shop.menu.del");
 
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -53,7 +54,7 @@ class UserController extends BaseController
         if($request->isMethod("post")){
 
             $this->validate($request,[
-                'name'=>"required|max:10|min:2|unique:users",
+                'name'=>"required|max:10|min:2",
                 'email'=>"required",
                 'password'=>"required",
             ]);
@@ -77,11 +78,14 @@ class UserController extends BaseController
 
     public function del($id)
     {
-        DB::transaction(function ()use ($id){
+        DB::transaction(function () use ($id){
 
-            DB::table('users')->where('id','=',$id)->delete();
-            DB::table('shops')->where('user_id','=',$id)->delete();
+//            DB::table('users')->where('id','=',$id)->delete();
+//            DB::table('shops')->where('user_id','=',$id)->delete();
 
+            User::findOrFail($id)->delete();
+
+            Shop::where(["user_id",$id])->delete();
         });
 
         return redirect()->route("admin.user.index")->with("success","删除成功");

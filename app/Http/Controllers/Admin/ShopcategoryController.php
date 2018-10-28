@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Shop;
 use App\Models\Shopcategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -26,6 +27,9 @@ class ShopcategoryController extends BaseController
                 "name" => "required|unique:shopcategories",
                 "img" => "required",
                 "status" => "required"
+            ],[
+                'img.required'=>"图片不能为空",
+                'status.required'=>"状态不能为空",
             ]);
 
             $data=$request->post();
@@ -80,6 +84,15 @@ class ShopcategoryController extends BaseController
     public function del($id)
     {
         $spcate=Shopcategory::find($id);
+
+        $cate=Shopcategory::findOrFail($id);
+
+        $shopCount=Shop::where('shop_cate_id',$cate->id)->count();
+
+        if ($shopCount){
+            //回跳
+            return  back()->with("danger","当前分类下有店铺，不能删除");
+        }
 
         unlink($spcate->img);
         if($spcate->delete()){

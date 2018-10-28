@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends BaseController
 {
@@ -125,6 +126,27 @@ class UserController extends BaseController
             if (Auth::attempt($data, $request->has("remember"))) {
 
 
+                $user=Auth::user();
+
+                $shop=$user->shop;
+//                dd($shop);
+                if($shop){
+                    switch ($shop->state){
+                        case 3:
+                            Auth::logout();
+                            return back()->withInput()->with("danger","商铺已禁用");
+                            break;
+                        case 2:
+                            Auth::logout();
+                            return back()->withInput()->with("danger","商铺待审核");
+                    }
+
+                }else{
+
+                    return redirect()->route("shop.shop.add")->with("danger","还未申请商铺");
+                }
+
+
                 return redirect()->route("shop.shop.index")->with("success", "登录成功");
 
             }else{
@@ -153,23 +175,34 @@ class UserController extends BaseController
     {
         $id=Auth::id();
 //        dd($id);
-        $user=User::find($id);
+        $users=User::find($id);
 
         if($request->isMethod("post")){
-
-            $data=$this->validate($request,[
-                'password'=>"required",
+            $this->validate($request, [
+                'old_password'=>'required',
+                'password'=>'required|confirmed'
+            ],[
+                'old_password.required'=>"旧密码不能为空",
             ]);
-            $data["password"]=bcrypt($data["password"]);
-            if($user->update($data)){
 
-                return redirect()->route("shop.user.index")->with("success","编辑成功");
+            $user=Auth::guard()->user();
+            $oldPassword=$request->post("old_password");
 
+            if(Hash::check($oldPassword,$user->password)){
+
+                $user->password=Hash::make($request->post("password"));
+
+                $user->save();
+
+                return redirect()->route("shop.user.index")->with("success","重置成功");
             }
+
+            return back()->with("danger","旧密码不正确");
+
 
         }
 
-        return view("shop.user.xg",compact("user"));
+        return view("shop.user.xg",compact("users"));
 
     }
 

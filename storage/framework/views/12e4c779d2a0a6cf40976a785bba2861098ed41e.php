@@ -1,16 +1,16 @@
-<?php $__env->startSection("title","商家重置密码"); ?>
+<?php $__env->startSection("title","管理员重置密码"); ?>
 <?php $__env->startSection("content"); ?>
     <form class="form-horizontal" method="post">
         <div class="form-group">
             <?php echo e(csrf_field()); ?>
 
-            <label for="inputEmail3" class="col-sm-2 control-label">商家名称</label>
+            <label for="inputEmail3" class="col-sm-2 control-label">管理员名称</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="name" placeholder="" name="name" value="<?php echo e($users->name); ?>" disabled>
+                <input type="text" class="form-control" id="name" placeholder="" name="name" value="<?php echo e($admins->name); ?>" disabled>
             </div>
         </div>
         <div class="form-group">
-            <label for="inputEmail3" class="col-sm-2 control-label">商家旧密码</label>
+            <label for="inputEmail3" class="col-sm-2 control-label">管理员旧密码</label>
             <div class="col-sm-10">
                 <input type="password" class="form-control" id="password" placeholder="" name="old_password">
             </div>
@@ -36,4 +36,4 @@
 <?php $__env->stopSection(); ?>
 
 
-<?php echo $__env->make("shop.layouts.main", array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+<?php echo $__env->make("admin.layouts.main", array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -30,8 +30,8 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">商家列表<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="<?php echo e(route("admin.user.index")); ?>">商家分类列表</a></li>
-                        <li><a href="<?php echo e(route("admin.user.add")); ?>">商家分类添加</a></li>
+                        <li><a href="<?php echo e(route("admin.user.index")); ?>">商家列表</a></li>
+                        <li><a href="<?php echo e(route("admin.user.add")); ?>">商家添加</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#">其它</a></li>
                     </ul>
@@ -54,7 +54,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo e(\Illuminate\Support\Facades\Auth::guard("admin")->user()->name); ?><span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             
-                            <li><a href="#">修改个人密码</a></li>
+                            <li><a href="<?php echo e(route("admin.admin.xg")); ?>">修改个人密码</a></li>
 
                             <li role="separator" class="divider"></li>
                             <li><a href="<?php echo e(route("admin.admin.logout")); ?>">退出</a></li>

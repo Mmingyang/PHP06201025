@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 /**
  * App\Models\User
@@ -45,6 +46,16 @@ class User extends Authenticatable
     public function shop()
     {
         return $this->hasOne(Shop::class,"user_id");
+
+    }
+
+    public function tj($id)
+    {
+        return DB::table('users')
+            ->join('shops', 'users.shop_id', '=', 'shops.id')
+            ->select('users.*',"shops.*")
+            ->where("users.id","{$id}")
+            ->get();
 
     }
 

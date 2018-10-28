@@ -127,6 +127,43 @@ class AdminController extends BaseController
     }
 
 
+    public function xg(Request $request)
+    {
+        $id=Auth::id();
+//        dd($id);
+        $admins=Admin::find($id);
+
+        if($request->isMethod("post")){
+            $this->validate($request, [
+                'old_password'=>'required',
+                'password'=>'required|confirmed'
+            ],[
+                'old_password.required'=>"旧密码不能为空",
+            ]);
+
+            $admin=Auth::guard('admin')->user();
+
+            $oldPassword=$request->post("old_password");
+
+            if(Hash::check($oldPassword,$admin->password)){
+
+                $admin->password=Hash::make($request->post("password"));
+
+                $admin->save();
+
+                return redirect()->route("admin.admin.index")->with("success","重置成功");
+            }
+
+            return back()->with("danger","旧密码不正确");
+
+        }
+
+        return view("admin.admin.xg",compact("admins"));
+
+    }
+
+
+
 
 
 

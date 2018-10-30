@@ -8,9 +8,9 @@
 
         <form class="form-inline pull-right" method="get">
             <div class="form-group">
-                <select name="good_id" class="form-control">
+                <select name="goods_id" class="form-control">
                     <option value="">请选择分类</option>
-                    @foreach($mc as $mcs)
+                    @foreach($cates as $mcs)
                         <option value="{{$mcs->id}}">{{$mcs->name}}</option>
                     @endforeach
                 </select>
@@ -61,7 +61,7 @@
             <td>{{$menu->rating}}</td>
             <td>{{$menu->shop_id}}</td>
             <td>{{$menu->menu_cate_id}}</td>
-            <td>{{$menu->goods_money}}</td>
+            <td>{{$menu->goods_price}}</td>
             <td>{{$menu->description}}</td>
             <td><?php if($menu->status==1) echo "上架"; else echo "下架";?></td>
             <td>

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Menu extends Model
 {
     //
-    protected $fillable = ['goods_name','goods_img','shop_id','menu_cate_id','goods_money','description','status'];
+    protected $fillable = ['goods_name','goods_img','shop_id','menu_cate_id','goods_price','description','status'];
 
     public function mc()
     {

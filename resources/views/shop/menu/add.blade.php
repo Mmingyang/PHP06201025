@@ -29,8 +29,8 @@
             <div class="col-sm-10">
                 <select name="menu_cate_id" class="form-control">
                     <option value="">--选择分类--</option>
-                    @foreach($menus as $menu)
-                        <option value="{{$menu->id}}">{{$menu->name}}</option>
+                    @foreach($cates as $cate)
+                        <option value="{{$cate->id}}">{{$cate->name}}</option>
                     @endforeach
                 </select>
             </div>
@@ -39,7 +39,7 @@
         <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">价格</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" placeholder="" name="goods_money" value="{{old("goods_money")}}">
+                <input type="text" class="form-control" placeholder="" name="goods_price" value="{{old("goods_price")}}">
             </div>
         </div>
 

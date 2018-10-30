@@ -16,3 +16,10 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//region 首页展示
+Route::get("shop/index","Api\ShopController@index");
+//endregion
+//region 查看详情
+Route::get("shop/check","Api\ShopController@check");
+//endregion

@@ -14,19 +14,15 @@ class MenuCategoryController extends BaseController
     //
     public function index()
     {
-        $shops=Shop::all();
-//        dd($shops);
+        //dd(Auth::user()->shop->id);
         $menus=MenuCategory::where("shop_id",Auth::user()->shop->id)->get();
 
 
-        return view("shop/menucategory/index",compact("menus","shops"));
+        return view("shop.menuCategory.index",compact("menus"));
     }
 
     public function add(Request $request)
     {
-
-        $fl=Shop::all();
-
         if($request->isMethod("post")){
 
             $this->validate($request, [
@@ -39,21 +35,20 @@ class MenuCategoryController extends BaseController
             ]);
 
             $data=$request->post();
-            $data['shop_id']=Auth::id();
-
+            $data['shop_id']=Auth::user()->shop->id;
 //            dd($data);
             if(MenuCategory::create($data)){
 
-                return redirect()->route("shop.menucategory.index")->with("success","添加成功");
+                return redirect()->route("shop.menuCategory.index")->with("success","添加成功");
 
             }else{
 
-                return redirect()->route("shop.menucategory.add")->with("danger","添加失败");
+                return redirect()->route("shop.menuCategory.add")->with("danger","添加失败");
 
             }
         }
 
-        return view("shop.menucategory.add",compact("fl"));
+        return view("shop.menuCategory.add");
 
     }
 
@@ -79,7 +74,7 @@ class MenuCategoryController extends BaseController
 
             if($menucate->update($data)){
 
-                return redirect()->route("shop.menucategory.index")->with("success","编辑成功");
+                return redirect()->route("shop.menuCategory.index")->with("success","编辑成功");
 
             }else{
 
@@ -89,7 +84,7 @@ class MenuCategoryController extends BaseController
 
         }
 
-        return view("shop.menucategory.edit",compact("menucate","fl"));
+        return view("shop.menuCategory.edit",compact("menucate","fl"));
 
     }
 
@@ -109,7 +104,7 @@ class MenuCategoryController extends BaseController
 
         if($menucate->delete()){
 
-            return redirect()->route("shop.menucategory.index")->with("success","删除成功");
+            return redirect()->route("shop.menuCategory.index")->with("success","删除成功");
 
         }else{
 

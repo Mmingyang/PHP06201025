@@ -7,6 +7,7 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends BaseController
@@ -118,6 +119,8 @@ class AdminController extends BaseController
     {
         $admin=Admin::find($id);
 //        dd($admin);
+
+
         if($admin->delete()){
 
             return redirect()->route("admin.admin.index")->with("success","删除成功");

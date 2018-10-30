@@ -107,11 +107,9 @@ class ShopController extends BaseController
 
         if($request->isMethod("post")){
 
-
                 $this->validate($request, [
                     "shop_cate_id" => "required",
                     "shop_name" => "required",
-                    "shop_img" => "required",
                     "qi_money" => "required",
                     "pei_money" => "required",
                     "notice" => "required",
@@ -119,7 +117,7 @@ class ShopController extends BaseController
                 ]);
                 $data = $request->post();
                 $file = $request->file("shop_img");
-                $data['shop_img'] = $file->store("shop_img", "image");
+//                $data['shop_img'] = $file->store("shop_img", "image");
                 $data['is_brand'] = $request->has("is_brand") ? 1 : 0;
                 $data['is_time'] = $request->has("is_time") ? 1 : 0;
                 $data['is_feng'] = $request->has("is_feng") ? 1 : 0;
@@ -127,8 +125,10 @@ class ShopController extends BaseController
                 $data['is_piao'] = $request->has("is_piao") ? 1 : 0;
                 $data['is_zhun'] = $request->has("is_zhun") ? 1 : 0;
                 $data['state'] = 2;
+
                 $data['user_id'] = Auth::id();
 
+//                dd($data);
                 if($shop->update($data)){
 
                     return redirect()->route("shop.shop.index")->with("success","编辑成功");

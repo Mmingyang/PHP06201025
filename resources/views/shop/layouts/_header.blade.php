@@ -19,8 +19,8 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">菜品分类列表<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{route("shop.menucategory.index")}}">菜品分类列表</a></li>
-                        <li><a href="{{route("shop.menucategory.add")}}">菜品分类添加</a></li>
+                        <li><a href="{{route("shop.menuCategory.index")}}">菜品分类列表</a></li>
+                        <li><a href="{{route("shop.menuCategory.add")}}">菜品分类添加</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#">其它</a></li>
                     </ul>

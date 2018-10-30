@@ -2,7 +2,7 @@
 @section("title","菜品分类列表")
 @section("content")
 
-    <a href="{{route("shop.menucategory.add")}}" class="btn btn-info">添加</a>
+    <a href="{{route("shop.menuCategory.add")}}" class="btn btn-info">添加</a>
 
     <table class="table">
         <tr>

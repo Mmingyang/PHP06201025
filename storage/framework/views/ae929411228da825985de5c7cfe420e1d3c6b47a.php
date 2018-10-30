@@ -29,8 +29,8 @@
             <div class="col-sm-10">
                 <select name="menu_cate_id" class="form-control">
                     <option value="">--选择分类--</option>
-                    <?php $__currentLoopData = $menus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $menu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <option value="<?php echo e($menu->id); ?>"><?php echo e($menu->name); ?></option>
+                    <?php $__currentLoopData = $cates; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cate): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($cate->id); ?>"><?php echo e($cate->name); ?></option>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>
@@ -39,7 +39,7 @@
         <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">价格</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" placeholder="" name="goods_money" value="<?php echo e(old("goods_money")); ?>">
+                <input type="text" class="form-control" placeholder="" name="goods_price" value="<?php echo e(old("goods_price")); ?>">
             </div>
         </div>
 

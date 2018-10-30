@@ -15,19 +15,14 @@ class MenuController extends BaseController
     //
     public function index(Request $request)
     {
+        $url = $request->query();
+        //接收数据
+        $cateId=$request->get("goods_id");
+        $keyword=$request->get("keyword");
+        $min = $request->get("minPrice");
+        $max = $request->get("maxPrice");
 
-//        $menus=Menu::all();
-        $id=Auth::id();
-        $mc=MenuCategory::all()->where("type_id",$id);
-//        dd($mc);
-        $url=$request->query();
-
-        $cateId=$request->input("good_id");
-        $keyword=$request->input("keyword");
-        $min = $request->input("minPrice");
-        $max = $request->input("maxPrice");
-
-        $query=Menu::orderBy("id")->where("shop_id",$id);
+        $query=Menu::where('shop_id',Auth::user()->shop->id);
 
         if ($keyword!==null){
             $query->where("goods_name","like","%{$keyword}%");
@@ -37,18 +32,17 @@ class MenuController extends BaseController
         }
         if ($max!==null){
 
-            $query->where("goods_money","<=",$max);
+            $query->where("goods_price","<=",$max);
         }
         if ($min!==null){
 
-            $query->where("goods_money",">=",$min);
+            $query->where("goods_price",">=",$min);
         }
         $goods=$query->paginate(1);
-
+        //得到所有分类
         $cates=MenuCategory::where("shop_id",Auth::user()->shop->id)->get();
-//        dd($cates);
 
-        return view("shop.menu.index",compact("mc","goods","url","cates"));
+        return view("shop.menu.index",compact("cates","goods","url"));
 
     }
 
@@ -56,17 +50,13 @@ class MenuController extends BaseController
     public function add(Request $request)
     {
 
-        $fl=Shop::all();
-
-        $menus=MenuCategory::all();
-
         if($request->isMethod("post")){
 
             $this->validate($request, [
                 "goods_name" => "required|unique:menus",
                 "goods_img" => "required",
                 "menu_cate_id"=>"required",
-                "goods_money"=>"required",
+                "goods_price"=>"required",
                 "description"=>"required",
                 "status"=>"required",
             ],[
@@ -74,7 +64,7 @@ class MenuController extends BaseController
                 "goods_name.unique"=>"菜品名称已存在",
                 "goods_img.required"=>"菜品图片不能为空",
                 "menu_cate_id.required"=>"所属分类ID不能为空",
-                "goods_money.required"=>"价格不能为空",
+                "goods_price.required"=>"价格不能为空",
                 "description.required"=>"描述不能为空",
                 "status.required"=>"菜品状态不能为空",
             ]);
@@ -82,8 +72,9 @@ class MenuController extends BaseController
 
             $data=$request->post();
 //            dd($data);
-            $data['shop_id']=Auth::id();
-//            dd($data["shop_id"]);
+            $data['shop_id']=Auth::user()->shop->id;
+//            dd($data);
+
             if(Menu::create($data)){
 
                 return redirect()->route("shop.menu.index")->with("success","添加成功");
@@ -93,7 +84,7 @@ class MenuController extends BaseController
         }
 
         $cates=MenuCategory::where("shop_id",Auth::user()->shop->id)->get();
-        return view("shop.menu.add",compact("fl","menus"));
+        return view("shop.menu.add",compact("cates"));
 
     }
 
@@ -103,43 +94,39 @@ class MenuController extends BaseController
 
         $menu=Menu::find($id);
         $fl=Shop::all();
-        $menus=MenuCategory::all();
 
         if($request->isMethod("post")){
 
             $this->validate($request, [
                 "goods_name" => "required",
-                "goods_img" => "required",
                 "menu_cate_id"=>"required",
-                "goods_money"=>"required",
+                "goods_price"=>"required",
                 "description"=>"required",
                 "status"=>"required",
             ],[
                 "goods_name.required"=>"菜品名称不能为空",
-                "goods_img.required"=>"菜品图片不能为空",
                 "menu_cate_id.required"=>"所属分类ID不能为空",
-                "goods_money.required"=>"价格不能为空",
+                "goods_price.required"=>"价格不能为空",
                 "description.required"=>"描述不能为空",
                 "status.required"=>"菜品状态不能为空",
             ]);
 
             $data=$request->post();
-//            dd($data);
-            $data['shop_id']=Auth::id();
-
-            if($menu->update($data)){
-
-                return redirect()->route("shop.menu.index")->with("编辑成功");
-
-            }else{
-
-                return redirect()->route("shop.menu.edit")->with("编辑失败");
-
+            if($data['goods_img']== null){
+                $data['goods_img']=$menu['goods_img'];
             }
 
-        }
+            $data['shop_id']=Auth::user()->shop->id;
 
-        return view("shop.menu.edit",compact("fl","menus","menu"));
+//            dd($data);
+            if($menu->update($data)) {
+
+                return redirect()->route("shop.menu.index")->with("success","编辑成功");
+
+            }
+        }
+        $cates=MenuCategory::where("shop_id",Auth::user()->shop->id)->get();
+        return view("shop/menu/edit",compact("fl","menu","cates"));
 
     }
 

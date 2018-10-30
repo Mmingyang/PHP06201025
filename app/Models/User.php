@@ -49,6 +49,7 @@ class User extends Authenticatable
 
     }
 
+
     public function tj($id)
     {
         return DB::table('users')

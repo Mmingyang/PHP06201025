@@ -7,9 +7,9 @@
 
         <form class="form-inline pull-right" method="get">
             <div class="form-group">
-                <select name="good_id" class="form-control">
+                <select name="goods_id" class="form-control">
                     <option value="">请选择分类</option>
-                    <?php $__currentLoopData = $mc; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mcs): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = $cates; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mcs): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <option value="<?php echo e($mcs->id); ?>"><?php echo e($mcs->name); ?></option>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
@@ -60,7 +60,7 @@
             <td><?php echo e($menu->rating); ?></td>
             <td><?php echo e($menu->shop_id); ?></td>
             <td><?php echo e($menu->menu_cate_id); ?></td>
-            <td><?php echo e($menu->goods_money); ?></td>
+            <td><?php echo e($menu->goods_price); ?></td>
             <td><?php echo e($menu->description); ?></td>
             <td><?php if($menu->status==1) echo "上架"; else echo "下架";?></td>
             <td>

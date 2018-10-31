@@ -116,6 +116,7 @@ class ShopController extends Controller
 
             $cates[$k]->goods_list=$cate->goodsList;
         }
+
         $shop->commodity=$cates;
 
         return $shop;

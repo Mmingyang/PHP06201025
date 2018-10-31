@@ -129,7 +129,152 @@
 
 4. 看
 
+# day05
+### 开发任务
 
+商家列表接口(支持商家搜索)
 
+获取指定商家接口
 
+实现步骤
 
+### 实现步骤
+
+1. https://www.showdoc.cc/Myang?page_id=1065007876894245
+
+2. https://www.showdoc.cc/Myang?page_id=1065099112977989
+
+# Day06
+
+## 开发任务
+
+接口开发
+
+- 用户注册
+- 用户登录
+- 忘记密码
+- 发送短信 要求
+- 创建会员表
+- 短信验证码发送成功后,保存到redis,并设置有效期5分钟
+- 用户注册时,从redis取出验证码进行验证
+
+## 实现步骤
+
+1.短信发送
+
+```php
+ //发送
+        $config = [
+            'access_key' => env("ALIYUN_ACCESS_ID"),
+            'access_secret' => env("ALIYUN_ACCESS_KEY"),
+            'sign_name' => '个人学习分享',
+        ];
+```
+2.短信验证码发送成功后,保存到redis,并设置有效期5分钟
+```php
+Redis::set("tel_".$tel,$code);
+Redis::expire("tel_".$tel,60*5);
+```
+
+3.会员注册实现
+```php
+public function reg(Request $request)
+    {
+        $data=$request->post();
+
+        $sms=$data['sms'];
+        $sm=Redis::get("tel_".$data['tel']);
+
+        $data['password']=Hash::make($request->password);
+
+        if($sms==$sm){
+
+            Member::create($data);
+            $data = [
+                'status' => "true",
+                'message' => "注册成功 请登录",
+            ];
+        }else{
+            $data = [
+                'status' => false,
+                'message' => "注册失败",
+
+            ];
+        }
+
+        return $data;
+
+    }
+```
+4.会员实现登录
+```php
+ public function login()
+    {
+
+        //接收数据
+        $name=\request()->name;
+        $password=\request()->password;
+
+        //判断
+        $member=Member::where('username',$name)->first();
+
+        if($member && Hash::check($password,$member->password)){
+
+            $data = [
+                'status' => "true",
+                'message' => "登录成功",
+                'username' => $name,
+            ];
+
+        }else{
+
+            $data = [
+                'status' => false,
+                'message' => "登录失败",
+            ];
+
+        }
+
+        return $data;
+
+    }
+```
+5.忘记密码
+```php
+ public function forget(Request $request)
+    {
+        //接收参数
+        $data=$request->post();
+        $sms=$data['sms'];
+        $sm=Redis::get("tel_".$data['tel']);
+        //密码加密
+        $data['password']=Hash::make($request->password);
+        //电话号码为接收的电话号码
+        $tel=$data['tel'];
+//        dd($data['tel']);
+        if($sms==$sm){
+            //查找条件为电话号码的一条数据
+            $member=Member::where('tel',$tel)->first();
+
+            if($member->update($data)){
+                $data = [
+                    'status' => "true",
+                    'message' => "重置成功",
+                ];
+            }else{
+                $data = [
+                    'status' => false,
+                    'message' => "重置失败",
+                ];
+            }
+
+        }else{
+            $data = [
+                'status' => false,
+                'message' => "重置失败",
+            ];
+        }
+
+        return $data;
+    }
+```

@@ -23,3 +23,15 @@ Route::get("shop/index","Api\ShopController@index");
 //region 查看详情
 Route::get("shop/check","Api\ShopController@check");
 //endregion
+//region 用户注册短信验证
+Route::get("member/sms","Api\MemberController@sms");
+//endregion
+//region 用户注册
+Route::post("member/reg","Api\MemberController@reg");
+//endregion
+//region 用户登录
+Route::post("member/login","Api\MemberController@login");
+//endregion
+//region 忘记密码
+Route::post("member/forget","Api\MemberController@forget");
+//endregion

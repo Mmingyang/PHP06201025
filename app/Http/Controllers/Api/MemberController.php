@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Validator;
 use Mrgoon\AliSms\AliSms;
 
 class MemberController extends Controller
@@ -15,6 +16,27 @@ class MemberController extends Controller
     public function reg(Request $request)
     {
         $data=$request->post();
+
+        $validate=Validator::make($data,[
+        'username'=>'required|unique:members',
+        'sms'=>'required|integer|min:10000|max:999999',
+        'tel'=>[
+            'required',
+            'regex:/^0?(13|14|15|17|18|19)[0-9]{9}$/',
+            'unique:members',
+        ],
+        'password'=>'required|min:3',
+    ]);
+
+        if($validate->fails()){
+
+            return[
+                'status' => "false",
+                //获取错误信息
+                "message" => $validate->errors()->first()
+            ];
+
+        }
 
         $sms=$data['sms'];
         $sm=Redis::get("tel_".$data['tel']);
@@ -97,6 +119,7 @@ class MemberController extends Controller
             $data = [
                 'status' => "true",
                 'message' => "登录成功",
+                'user_id' => $member->id,
                 'username' => $name,
             ];
 
@@ -107,7 +130,7 @@ class MemberController extends Controller
             ];
 
         }
-
+//        dd($data);
         return $data;
 
     }
@@ -144,15 +167,47 @@ class MemberController extends Controller
         }else{
             $data = [
                 'status' => false,
-                'message' => "重置失败",
+                'message' => "验证码不正确",
             ];
         }
-
+//        dd($data);
         return $data;
     }
-    
-    
-    
+
+    //修改密码
+    public function edit(Request $request)
+    {
+        $data=$request->post();
+
+        $member=Member::where("id",$data['id'])->first();
+//        dd($data['id']);
+        if (Hash::check($data['oldPassword'],$member->password)){
+//            dd($data);
+            $data['password']=Hash::make($data['newPassword']);
+            $member->update($data);
+            $data=[
+                "status" =>"true",
+                "message" => "修改成功"
+            ];
+            return $data;
+
+        }else{
+            $data=[
+                "status" =>"false",
+                "message" => "修改失败"
+            ];
+//            dd($data);
+            return $data;
+        }
+
+    }
+
+    //查看详情
+    public function detail(Request $request)
+    {
+        return Member::find($request->get('user_id'));
+    }
+
     
 
 }

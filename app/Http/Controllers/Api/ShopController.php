@@ -58,6 +58,8 @@ class ShopController extends Controller
             $shop->send_cost=5;
             $shop->distance=rand(1000, 5000);
             $shop->estimate_time=31;
+            $shop->satisfy_rate=91;
+
 
         $shop->evaluate=[
 
@@ -115,9 +117,11 @@ class ShopController extends Controller
         foreach ($cates as $k=>$cate){
 
             $cates[$k]->goods_list=$cate->goodsList;
+            $cates[$k]->type_accumulation=$cate->type_id;
         }
 
         $shop->commodity=$cates;
+        $shop["satisfy_rate"]="91".rand(1,9);
 
         return $shop;
 

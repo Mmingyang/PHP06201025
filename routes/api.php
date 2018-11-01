@@ -35,3 +35,24 @@ Route::post("member/login","Api\MemberController@login");
 //region 忘记密码
 Route::post("member/forget","Api\MemberController@forget");
 //endregion
+//region 修改密码
+Route::post("member/edit","Api\MemberController@edit");
+//endregion
+//region 用户详情
+Route::get("member/detail","Api\MemberController@detail");
+//endregion
+//region 地址列表
+Route::get("addressList/index","Api\AddressListController@index");
+//endregion
+//region 地址添加
+Route::post("addressList/add","Api\AddressListController@add");
+//endregion
+//region 地址修改
+Route::any("addressList/edit","Api\AddressListController@edit");
+//endregion
+//region 购物车列表
+Route::get("cart/index","Api\CartController@index");
+//endregion
+//region 购物车添加
+Route::post("cart/add","Api\CartController@add");
+//endregion

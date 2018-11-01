@@ -255,7 +255,7 @@ public function reg(Request $request)
         if($sms==$sm){
             //查找条件为电话号码的一条数据
             $member=Member::where('tel',$tel)->first();
-
+     
             if($member->update($data)){
                 $data = [
                     'status' => "true",
@@ -278,3 +278,21 @@ public function reg(Request $request)
         return $data;
     }
 ```
+# day07
+
+##开发任务
+
+1. 用户地址管理相关接口
+
+2. 购物车相关接口
+
+###实现步骤
+
+
+1. 用户地址管理相关接口
+```html
+1. https://www.showdoc.cc/Myang?page_id=1080408729668261
+2. https://www.showdoc.cc/Myang?page_id=1080413882636883
+3. https://www.showdoc.cc/Myang?page_id=1080444191825026
+```
+2. 购物车相关接口

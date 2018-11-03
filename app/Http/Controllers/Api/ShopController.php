@@ -121,7 +121,6 @@ class ShopController extends Controller
         }
 
         $shop->commodity=$cates;
-        $shop["satisfy_rate"]="91".rand(1,9);
 
         return $shop;
 

@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Shopcategory whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Shopcategory whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop[] $shops
  */
 class Shopcategory extends Model
 {

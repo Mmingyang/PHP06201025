@@ -56,3 +56,15 @@ Route::get("cart/index","Api\CartController@index");
 //region 购物车添加
 Route::post("cart/add","Api\CartController@add");
 //endregion
+//region 添加订单
+Route::post("order/add","Api\OrderController@add");
+//endregion
+//region 订单列表
+Route::get("order/index","Api\OrderController@index");
+//endregion
+//region 订单详情
+Route::get("order/check","Api\OrderController@check");
+//endregion
+//region 订单支付
+Route::post("order/zfb","Api\OrderController@zfb");
+//endregion

@@ -48,6 +48,7 @@ class AddressListController extends Controller
         }
         //得到所有
         $data=$request->all();
+        $data['is_default']=0;
         if(AddressList::create($data)){
             $data = [
                 'status' => "true",

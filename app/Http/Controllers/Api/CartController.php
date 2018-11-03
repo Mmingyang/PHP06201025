@@ -40,6 +40,9 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
+        //清空购物车
+        Cart::where("user_id",$request->post('user_id'))->delete();
+
         //接收参数
         $goods=$request->post('goodsList');
         $counts=$request->post('goodsCount');

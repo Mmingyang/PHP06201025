@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Shop;
 
+use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends BaseController
@@ -102,14 +104,14 @@ class UserController extends BaseController
 
     public function del($id)
     {
-        $user=User::find($id);
+        DB::transaction(function () use ($id){
 
-        if($user->delete()){
+            User::findOrFail($id)->delete();
 
-            return redirect()->route("shop.user.index")->with("success","删除成功");
+            Shop::where(["user_id",$id])->delete();
+        });
 
-        }
-
+        return back()->with("success","删除成功");
     }
 
 

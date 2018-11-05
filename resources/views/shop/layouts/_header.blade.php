@@ -44,6 +44,39 @@
                         <li><a href="#">其它</a></li>
                     </ul>
                 </li>
+                {{--订单列表--}}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">订单列表<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{route("shop.order.index")}}">订单列表</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">其它</a></li>
+                    </ul>
+                </li>
+                {{--订单统计--}}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">订单量统计<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{route("shop.order.day")}}">日</a></li>
+                        <li><a href="{{route("shop.order.month")}}">月</a></li>
+                        <li><a href="{{route("shop.order.total")}}">总计</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">其它</a></li>
+                    </ul>
+                </li>
+                {{--菜品统计--}}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">菜品销量统计<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{route("shop.order.cday")}}">日</a></li>
+                        <li><a href="{{route("shop.order.cmonth")}}">月</a></li>
+                        <li><a href="{{route("shop.order.ctotal")}}">总计</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">其它</a></li>
+                    </ul>
+                </li>
+
+
 
             </ul>
             <ul class="nav navbar-nav navbar-right">

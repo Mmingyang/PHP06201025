@@ -52,6 +52,22 @@ Route::domain("admin.elm.com")->namespace("Admin")->group(function (){
     Route::any("event/edit/{id}","EventController@edit")->name("admin.event.edit");
     Route::get("event/del/{id}","EventController@del")->name("admin.event.del");
     //endregion
+    //region 订单量列表
+    Route::get("order/day","OrderController@day")->name("admin.order.day");
+    Route::get("order/month","OrderController@month")->name("admin.order.month");
+    Route::get("order/total","OrderController@total")->name("admin.order.total");
+    Route::get("order/cday","OrderController@cday")->name("admin.order.cday");
+    Route::get("order/cmonth","OrderController@cmonth")->name("admin.order.cmonth");
+    Route::get("order/ctotal","OrderController@ctotal")->name("admin.order.ctotal");
+    //endregion
+    //region 会员管理
+    Route::get("member/index","MemberController@index")->name("admin.member.index");
+    Route::get("member/check/{id}","MemberController@check")->name("admin.member.check");
+    Route::get("member/off/{id}","MemberController@off")->name("admin.member.off");
+    //endregion
+
+
+
 });
 
 
@@ -90,4 +106,17 @@ Route::domain("shop.elm.com")->namespace("Shop")->group(function (){
     Route::get("event/index","EventController@index")->name("shop.event.index");
     Route::get("event/ck/{id}","EventController@ck")->name("shop.event.ck");
     //endregion
+    //region 前台订单列表
+    Route::get("order/index","OrderController@index")->name("shop.order.index");
+    Route::get("order/check/{id}","OrderController@check")->name("shop.order.check");
+    Route::get("order/off/{id}","OrderController@off")->name("shop.order.off");
+    Route::get("order/deliver/{id}","OrderController@deliver")->name("shop.order.deliver");
+    Route::get("order/day","OrderController@day")->name("shop.order.day");
+    Route::get("order/month","OrderController@month")->name("shop.order.month");
+    Route::get("order/total","OrderController@total")->name("shop.order.total");
+    Route::get("order/cday","OrderController@cday")->name("shop.order.cday");
+    Route::get("order/cmonth","OrderController@cmonth")->name("shop.order.cmonth");
+    Route::get("order/ctotal","OrderController@ctotal")->name("shop.order.ctotal");
+    //endregion
+
 });

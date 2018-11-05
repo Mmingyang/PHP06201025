@@ -280,13 +280,13 @@ public function reg(Request $request)
 ```
 # day07
 
-##开发任务
+## 开发任务
 
 1. 用户地址管理相关接口
 
 2. 购物车相关接口
 
-###实现步骤
+### 实现步骤
 
 
 1. 用户地址管理相关接口
@@ -296,3 +296,11 @@ public function reg(Request $request)
 3. https://www.showdoc.cc/Myang?page_id=1080444191825026
 ```
 2. 购物车相关接口
+
+# day08
+
+## 开发任务
+
+1. 订单接口(使用事务保证订单和订单商品表同时写入成功)
+2. 密码修改和重置密码接口
+

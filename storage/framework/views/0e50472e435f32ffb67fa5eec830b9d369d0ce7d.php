@@ -55,6 +55,39 @@
                         <li><a href="#">其它</a></li>
                     </ul>
                 </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">会员管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?php echo e(route("admin.member.index")); ?>">会员列表</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">其它</a></li>
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">订单量统计<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?php echo e(route("admin.order.day")); ?>">日</a></li>
+                        <li><a href="<?php echo e(route("admin.order.month")); ?>">月</a></li>
+                        <li><a href="<?php echo e(route("admin.order.total")); ?>">总计</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">其它</a></li>
+                    </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">菜品销量统计<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?php echo e(route("admin.order.cday")); ?>">日</a></li>
+                        <li><a href="<?php echo e(route("admin.order.cmonth")); ?>">月</a></li>
+                        <li><a href="<?php echo e(route("admin.order.ctotal")); ?>">总计</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">其它</a></li>
+                    </ul>
+                </li>
+
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
 

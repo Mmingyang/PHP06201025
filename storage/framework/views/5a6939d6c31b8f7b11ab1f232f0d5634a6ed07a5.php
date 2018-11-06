@@ -16,6 +16,15 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-2 control-label">角色</label>
+            <div class="col-sm-10">
+                <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <input type="checkbox" name="role[]" value="<?php echo e($role->id); ?>"><?php echo e($role->name); ?>
+
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
+        </div>
+        <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">管理员密码</label>
             <div class="col-sm-10">
                 <input type="password" class="form-control" id="password" placeholder="" name="password">

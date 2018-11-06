@@ -65,8 +65,17 @@ Route::domain("admin.elm.com")->namespace("Admin")->group(function (){
     Route::get("member/check/{id}","MemberController@check")->name("admin.member.check");
     Route::get("member/off/{id}","MemberController@off")->name("admin.member.off");
     //endregion
-
-
+    //region 权限管理
+    Route::get("permission/index","PermissionController@index")->name("admin.permission.index");
+    Route::any("permission/add","PermissionController@add")->name("admin.permission.add");
+    Route::any("permission/edit/{id}","PermissionController@edit")->name("admin.permission.edit");
+    Route::get("permission/del/{id}","PermissionController@del")->name("admin.permission.del");
+    //endregion
+    //region 角色管理
+    Route::get("role/index","RoleController@index")->name("admin.role.index");
+    Route::any("role/add","RoleController@add")->name("admin.role.add");
+    Route::any("role/edit/{id}","RoleController@edit")->name("admin.role.edit");
+    //endregion
 
 });
 

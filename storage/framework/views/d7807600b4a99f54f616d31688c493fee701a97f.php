@@ -8,7 +8,7 @@
             <th>ID</th>
             <th>管理员名称</th>
             <th>管理员邮箱</th>
-            <th>管理员密码</th>
+            <th>角色名</th>
             <th>操作</th>
         </tr>
         <?php $__currentLoopData = $admins; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $admin): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -16,7 +16,7 @@
             <td><?php echo e($admin->id); ?></td>
             <td><?php echo e($admin->name); ?></td>
             <td><?php echo e($admin->email); ?></td>
-            <td><?php echo e($admin->password); ?></td>
+            <td><?php echo e(str_replace(['[',']','"'],'',json_encode($admin->getRoleNames(),JSON_UNESCAPED_UNICODE))); ?></td>
             <td>
                 <a href="edit/<?php echo e($admin->id); ?>" class="btn btn-info">编辑</a>
                 <a href="del/<?php echo e($admin->id); ?>" class="btn btn-info">删除</a>

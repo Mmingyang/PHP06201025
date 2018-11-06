@@ -6,7 +6,7 @@ use App\Models\Member;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class MemberController extends Controller
+class MemberController extends BaseController
 {
     //会员管理
     //会员列表

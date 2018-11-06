@@ -17,6 +17,18 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-2 control-label">角色</label>
+            <div class="col-sm-10">
+                @foreach($roles as $role)
+                    <input type="checkbox" name="role[]" value="{{$role->id}}"
+                           @if($admin->hasRole($role->name))
+                           checked
+                            @endif
+                    >{{$role->name}}
+                @endforeach
+            </div>
+        </div>
+        <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">管理员密码</label>
             <div class="col-sm-10">
                 <input type="password" class="form-control" id="password" placeholder="" name="password">

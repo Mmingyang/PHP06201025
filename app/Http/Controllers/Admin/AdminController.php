@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class AdminController extends BaseController
 {
@@ -60,19 +61,18 @@ class AdminController extends BaseController
 
             $data["password"]=bcrypt($data["password"]);
 
-            if(Admin::create($data)){
+            $admin=Admin::create($data);
 
-                return redirect()->route("admin.admin.index")->with("success","添加成功");
+            $admin->syncRoles($request->post("role"));
 
-            }else{
 
-                return redirect()->route("admin.admin.add")->with("danger","添加失败");
-
-            }
+            return redirect()->route("admin.admin.index")->with("success","添加成功");
 
         }
 
-        return view("admin.admin.add");
+        $roles=Role::all();
+
+        return view("admin.admin.add",compact("roles"));
     }
 
     public function logout()
@@ -87,10 +87,9 @@ class AdminController extends BaseController
     {
         $admin=Admin::find($id);
 
-
         if($request->isMethod("post")){
             $this->validate($request,[
-                'name'=>"required|max:10|min:2|unique:admins",
+                'name'=>"required|max:10|min:2",
                 'email'=>"required",
                 'password'=>"required",
             ]);
@@ -99,27 +98,29 @@ class AdminController extends BaseController
 
             $data["password"]=bcrypt($data["password"]);
 
-            if($admin->update($data)){
+            $admin->update($data);
 
-                return redirect()->route("admin.admin.index")->with("success","编辑成功");
+            $admin->syncRoles($request->post("role"));
 
-            }else{
+            return redirect()->route("admin.admin.index")->with("success","编辑成功");
 
-                return redirect()->route("admin.admin.edit")->with("danger","编辑失败");
-
-            }
 
         }
 
-        return view("admin.admin.edit",compact("admin"));
+        $roles=Role::all();
+
+        return view("admin.admin.edit",compact("admin","roles"));
 
     }
 
     public function del($id)
     {
+        if ($id == 4) {
+            return back()->with("danger", "不能删除");
+        }
+
         $admin=Admin::find($id);
 //        dd($admin);
-
 
         if($admin->delete()){
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * App\Models\Admin
@@ -27,6 +28,8 @@ use Illuminate\Database\Eloquent\Model;
 class Admin extends \Illuminate\Foundation\Auth\User
 {
     //
+    use HasRoles;
+    protected $guard_name= 'admin';
     protected $fillable = ['name', 'email', 'password'];
 
 }

@@ -4,10 +4,12 @@
     <table class="table">
         <tr>
             <th>总数量</th>
+            <th>总价钱</th>
         </tr>
         <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $datum): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <tr>
             <td><?php echo e($datum->nums); ?></td>
+            <td><?php echo e($datum->money); ?></td>
         </tr>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </table>

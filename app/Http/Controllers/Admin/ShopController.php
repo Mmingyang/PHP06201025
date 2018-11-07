@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Models\Order;
 use App\Models\Shop;
 use App\Models\Shopcategory;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ShopController extends BaseController
 {
@@ -62,9 +66,16 @@ class ShopController extends BaseController
     public function del($id)
     {
         //查询一条
-        $store=Shop::find($id);
-        unlink($store->shop_img);
-        $store->delete();
+//        $store=Shop::find($id);
+        //删除店铺需要同时删除用户 需要用到事务保证
+        DB::transaction(function () use ($id) {
+            //删除店铺
+            $shop = Shop::findOrFail($id)->delete();
+            //删除用户
+            $user = User::where("shop_id", $id)->delete();
+//            dd($user);
+        });
+
         return redirect()->route("admin.shop.index")->with("success","删除成功");
     }
 
@@ -75,6 +86,25 @@ class ShopController extends BaseController
         $data->state=1;
 //        dd($data);
         $data->save();
+
+        $user=User::where('id',$data->user_id)->first();
+
+        $shopName=$data->shop_name;
+        $to = $user->email;
+
+        // dd($to);
+        $subject =$shopName. '审核通知';
+
+        Mail::send(
+            'emails.shop',
+            compact("shopName"),
+            function ($message) use($to, $subject) {
+//                dd($message);
+                $message->to($to)->subject($subject);
+            }
+        );
+
+
         return redirect()->route("admin.shop.index")->with("success","审核成功");
     }
 

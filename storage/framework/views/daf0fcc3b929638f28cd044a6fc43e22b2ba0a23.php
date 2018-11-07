@@ -9,7 +9,11 @@
 
             <label for="inputEmail3" class="col-sm-2 control-label">权限名称</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="name" placeholder="" name="name" value="<?php echo e($permissions->name); ?>">
+                <select name="name" class="form-control">
+                    <?php $__currentLoopData = $urls; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $url): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($url); ?>"><?php echo e($url); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </select>
             </div>
         </div>
         <div class="form-group">

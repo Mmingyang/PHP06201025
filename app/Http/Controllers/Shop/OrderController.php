@@ -115,7 +115,7 @@ class OrderController extends BaseController
 //        dd($id);
 
         $data=Order::where("shop_id",$id)
-            ->select(DB::raw("COUNT(*) as nums"))
+            ->select(DB::raw("COUNT(*) as nums,SUM(total) as money"))
             ->get();
 
 //        dd($data->toArray());
@@ -130,22 +130,23 @@ class OrderController extends BaseController
     //日
     public function cday()
     {
-        //读取商家所有订单
-        $order=Order::where("shop_id",Auth::user()->shop->id)->whereIn("status",[1,2,3])->pluck("id");
-//        dd($order);
-        $data= OrderDetail::select(DB::raw("DATE_FORMAT(created_at,'%Y-%m-%d') as date,SUM(amount) as nums,SUM(amount * goods_price) as money"))
+
+        $shopId=Auth::user()->shop->id;
+        $order=Order::where("shop_id",$shopId)->whereIn("status",[1,2,3])->pluck("id");
+        $data=OrderDetail::select(DB::raw("DATE_FORMAT(created_at,'%Y-%m-%d') as date,SUM(amount) as nums,SUM(amount * goods_price) as money"))
             ->whereIn("order_id",$order)
             ->groupBy('date')
             ->get();
+
 //        dd($data->toArray());
         return view("shop.order.cday", compact("data"));
     }
     //月
     public function cmonth()
     {
-        //读取商家所有订单
-        $order=Order::where("shop_id",Auth::user()->shop->id)->whereIn("status",[1,2,3])->pluck("id");
-        $data= OrderDetail::select(DB::raw("DATE_FORMAT(created_at,'%Y-%m') as date,SUM(amount) as nums,SUM(amount * goods_price) as money"))
+        $shopId = Auth::user()->shop->id;
+        $order = Order::where("shop_id", $shopId)->whereIn("status", [1, 2, 3])->pluck("id");
+        $data = OrderDetail::select(DB::raw("DATE_FORMAT(created_at,'%Y-%m') as date,SUM(amount) as nums,SUM(amount * goods_price) as money"))
             ->whereIn("order_id",$order)
             ->groupBy('date')
             ->get();
@@ -157,10 +158,11 @@ class OrderController extends BaseController
     //总
     public function ctotal()
     {
-        $order=Order::where("shop_id",Auth::user()->shop->id)->whereIn("status",[1,2,3])->pluck("id");
+        $ids = Order::where("shop_id",Auth::user()->shop->id)->pluck("id");
         $data= OrderDetail::select(DB::raw("SUM(amount) as nums,SUM(amount * goods_price) as money"))
-            ->whereIn("order_id",$order)
+            ->whereIn("order_id",$ids)
             ->get();
+
 //        dd($data->toArray());
 
         return view("shop.order.ctotal", compact("data"));

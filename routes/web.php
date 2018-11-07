@@ -15,6 +15,21 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get("test", function () {
+
+    $shopName="互联网学院";
+    $to = '1929652240@qq.com';//收件人
+    $subject = $shopName.' 审核通知';//邮件标题
+    \Illuminate\Support\Facades\Mail::send(
+        'emails.shop',
+        compact("shopName"),
+        function ($message) use($to, $subject) {
+            $message->to($to)->subject($subject);
+        }
+    );
+});
+
+
 
 Route::domain("admin.elm.com")->namespace("Admin")->group(function (){
 
@@ -75,6 +90,10 @@ Route::domain("admin.elm.com")->namespace("Admin")->group(function (){
     Route::get("role/index","RoleController@index")->name("admin.role.index");
     Route::any("role/add","RoleController@add")->name("admin.role.add");
     Route::any("role/edit/{id}","RoleController@edit")->name("admin.role.edit");
+    //endregion
+    //region 导航菜单管理
+    Route::get("nav/index","NavController@index")->name("admin.nav.index");
+    Route::any("nav/add","NavController@add")->name("admin.nav.add");
     //endregion
 
 });

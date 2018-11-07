@@ -1,4 +1,4 @@
-<?php $__env->startSection("title","订单量总量统计"); ?>
+<?php $__env->startSection("title","菜品销售总量统计"); ?>
 <?php $__env->startSection("content"); ?>
 
     <table class="table">

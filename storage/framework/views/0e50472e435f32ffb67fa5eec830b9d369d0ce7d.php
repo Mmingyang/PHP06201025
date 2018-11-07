@@ -15,87 +15,101 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#}">首页 <span class="sr-only">(current)</span></a></li>
-                
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">商家分类列表<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="<?php echo e(route("admin.shopcategory.index")); ?>">商家分类列表</a></li>
-                        <li><a href="<?php echo e(route("admin.shopcategory.add")); ?>">商家分类添加</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">其它</a></li>
+                <?php $__currentLoopData = \App\Models\Nav::where("pid",0)->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k1=>$v1): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false"><?php echo e($v1->name); ?> <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
 
-                    </ul>
-                </li>
+                            <?php $__currentLoopData = \App\Models\Nav::where("pid",$v1->id)->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k2=>$v2): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li><a href="<?php echo e(route($v2->url)); ?>"><?php echo e($v2->name); ?></a></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </ul>
+                    </li>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+
                 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">商家列表<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="<?php echo e(route("admin.user.index")); ?>">商家列表</a></li>
-                        <li><a href="<?php echo e(route("admin.user.add")); ?>">商家添加</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">其它</a></li>
-                    </ul>
-                </li>
                 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">商铺列表<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="<?php echo e(route("admin.shop.index")); ?>">商铺列表</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">其它</a></li>
-                    </ul>
-                </li>
+                    
+                    
+                        
+                        
+                        
+                        
+
+                    
                 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">活动列表<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="<?php echo e(route("admin.event.index")); ?>">活动列表</a></li>
-                        <li><a href="#">活动添加</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">其它</a></li>
-                    </ul>
-                </li>
                 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">会员管理<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="<?php echo e(route("admin.member.index")); ?>">会员列表</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">其它</a></li>
-                    </ul>
-                </li>
                 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">订单量统计<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="<?php echo e(route("admin.order.day")); ?>">日</a></li>
-                        <li><a href="<?php echo e(route("admin.order.month")); ?>">月</a></li>
-                        <li><a href="<?php echo e(route("admin.order.total")); ?>">总计</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">其它</a></li>
-                    </ul>
-                </li>
+                    
+                    
+                        
+                        
+                        
+                        
+                    
                 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">菜品销量统计<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="<?php echo e(route("admin.order.cday")); ?>">日</a></li>
-                        <li><a href="<?php echo e(route("admin.order.cmonth")); ?>">月</a></li>
-                        <li><a href="<?php echo e(route("admin.order.ctotal")); ?>">总计</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">其它</a></li>
-                    </ul>
-                </li>
                 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">权限管理<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="<?php echo e(route("admin.permission.index")); ?>">权限列表</a></li>
-                        <li><a href="<?php echo e(route("admin.role.index")); ?>">角色列表</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">其它</a></li>
-                    </ul>
-                </li>
+                
+                    
+                    
+                        
+                        
+                        
+                    
+                
+                
+                
+                    
+                    
+                        
+                        
+                        
+                        
+                    
+                
+                
+                
+                    
+                    
+                        
+                        
+                        
+                    
+                
+                
+                
+                    
+                    
+                        
+                        
+                        
+                        
+                        
+                    
+                
+                
+                
+                    
+                    
+                        
+                        
+                        
+                        
+                        
+                    
+                
+                
+                
+                    
+                    
+                        
+                        
+                        
+                        
+                    
+                
 
 
             </ul>
@@ -107,6 +121,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo e(\Illuminate\Support\Facades\Auth::guard("admin")->user()->name); ?><span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             
+                            <li><a href="<?php echo e(route("admin.nav.index")); ?>">导航菜单管理</a></li>
                             <li><a href="<?php echo e(route("admin.admin.xg")); ?>">修改个人密码</a></li>
 
                             <li role="separator" class="divider"></li>

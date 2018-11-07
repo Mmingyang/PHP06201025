@@ -1,5 +1,5 @@
 @extends("shop.layouts.main")
-@section("title","订单量总量统计")
+@section("title","菜品销售总量统计")
 @section("content")
 
     <table class="table">

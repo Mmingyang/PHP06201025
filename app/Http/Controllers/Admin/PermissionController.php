@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Permission;
 
 class PermissionController extends BaseController
@@ -21,6 +22,28 @@ class PermissionController extends BaseController
     //添加权限
     public function add(Request $request)
     {
+        //声明空数组装路由名
+        $urls=[];
+        //得到所有路由
+        $routes=Route::getRoutes();
+
+//        dd($routes);
+        //循环遍历
+        foreach ($routes as $route){
+            if(isset($route->action['namespace']) && $route->action['namespace']=="App\Http\Controllers\Admin"){
+
+                $urls[]=$route->action['as'];
+            }
+
+        }
+
+        //转化成数组
+        $pers=Permission::pluck("name")->toArray();
+
+        //已经存在的删除
+        $urls=array_diff($urls,$pers);
+
+
         if($request->isMethod("post")){
 
             $this->validate($request,[
@@ -38,12 +61,33 @@ class PermissionController extends BaseController
 
         }
 
-        return view("admin.permission.add");
+        return view("admin.permission.add",compact("urls"));
     }
+
+
 
     //编辑权限
     public function edit(Request $request,$id)
     {
+        //声明空数组装路由名
+        $urls=[];
+        //得到所有路由
+        $routes=Route::getRoutes();
+
+//        dd($routes);
+        //循环遍历
+        foreach ($routes as $route){
+            if(isset($route->action['namespace']) && $route->action['namespace']=="App\Http\Controllers\Admin"){
+
+                $urls[]=$route->action['as'];
+            }
+
+        }
+
+        //转化成数组
+        $pers=Permission::pluck("name")->toArray();
+
+
         //找到指定的id
         $permissions=Permission::find($id);
 
@@ -64,9 +108,11 @@ class PermissionController extends BaseController
 
         }
 
-        return view("admin.permission.edit",compact("permissions"));
+        return view("admin.permission.edit",compact("permissions","urls"));
 
     }
+
+
 
 
     //删除权限

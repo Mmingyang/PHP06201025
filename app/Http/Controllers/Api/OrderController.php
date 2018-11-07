@@ -8,9 +8,12 @@ use App\Models\Member;
 use App\Models\Menu;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Shop;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Mrgoon\AliSms\AliSms;
 
 class OrderController extends Controller
 {
@@ -176,6 +179,52 @@ class OrderController extends Controller
         $order->status=1;
         $order->save();
 
+        //发送邮件
+        //通过订单得到店铺名
+        $shopId=$order->shop_id;
+//        dd($shopId);
+
+
+        //查当前商铺用户ID
+        $user=Shop::where("id",$shopId)->first()->toArray();
+//        dd($user);
+        //得到用户ID
+        $userId=$user['user_id'];
+//        dd($userId);
+        //通过用户id找邮箱
+        $em=User::where("id",$userId)->first()->toArray();
+//        dd($em);
+        $email=$em['email'];
+        //用户名字
+        $name =$em['name'];
+        $shopName=$name;
+        $to=$email;
+        $subject=$shopName.'订单通知';
+        \Illuminate\Support\Facades\Mail::send(
+            'emails.order',
+            compact("shopName"),
+            function ($message) use($to, $subject) {
+                $message->to($to)->subject($subject);
+            }
+        );
+
+        //得到用户电话
+        $tel=$order->tel;
+
+        //发送短信
+        $code=$name;
+//        dd($code);
+        $config = [
+            'access_key' => env("ALIYUN_ACCESS_ID"),
+            'access_secret' => env("ALIYUN_ACCESS_KEY"),
+            'sign_name' => '个人学习分享',
+        ];
+
+        $sms=New AliSms();
+//        dd($tel);
+
+        $response = $sms->sendSms($tel,"SMS_150572199",['name'=>$code],$config);
+//        dd($response);
 
         return[
             'status'=>'true',

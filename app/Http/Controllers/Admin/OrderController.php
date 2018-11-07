@@ -18,9 +18,8 @@ class OrderController extends BaseController
         $shopId=Auth::id();
 
 //        dd($shopId);
-        $data=Order::where("shop_id",$shopId)
-            ->select(DB::raw("DATE_FORMAT(created_at,'%Y-%m-%d') as date,COUNT(*) as nums,SUM(total) as money"))
-            ->groupBy('date')
+        $data=Order::select(DB::raw("DATE_FORMAT(created_at,'%Y-%m-%d') as date,SUM(total) as nums,shop_id"))
+            ->groupBy('date','shop_id')
             ->get();
 
 //        dd($data->toArray());
@@ -34,10 +33,10 @@ class OrderController extends BaseController
     {
         $shopId=Auth::id();
 
-        $data=Order::where("shop_id",$shopId)
-            ->select(DB::raw("DATE_FORMAT(created_at,'%Y-%m') as date,COUNT(*) as nums,SUM(total) as money"))
-            ->groupBy('date')
+        $data=Order::select(DB::raw("DATE_FORMAT(created_at,'%Y-%m') as date,SUM(total) as nums,shop_id"))
+            ->groupBy('date','shop_id')
             ->get();
+
 
 //        dd($data->toArray());
         return view("admin.order.month",compact("data"));
@@ -51,9 +50,10 @@ class OrderController extends BaseController
         $id=Auth::id();
 
 //        dd($id);
-        $data=Order::where("shop_id",$id)
-            ->select(DB::raw("COUNT(*) as nums"))
+        $data=Order::select(DB::raw("COUNT(*) as nums,SUM(total) as money,shop_id"))
+            ->groupBy('shop_id')
             ->get();
+
 //        dd($data->toArray());
 
         return view("admin.order.total",compact("data"));

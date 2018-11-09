@@ -28,6 +28,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AddressList whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AddressList whereUserId($value)
  * @mixin \Eloquent
+ * @property int|null $is_default 默认地址 0不是 1 是
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AddressList whereIsDefault($value)
  */
 class AddressList extends Model
 {

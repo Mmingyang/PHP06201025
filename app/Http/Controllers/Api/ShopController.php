@@ -12,8 +12,25 @@ use Illuminate\Support\Facades\Auth;
 class ShopController extends Controller
 {
     // 首页显示
-    public function index()
+    public function index(Request $request)
     {
+//        $keyword = $request->get("keyword");
+//        // $query = Shop::orderBy("id");
+//
+////        dd($shops);
+//        //内容搜索
+//        if($keyword !== null){
+//            $shops=Shop::where("shop_name","like","%{$keyword}%")->where('status',1)->get();
+//        }else{
+//            $shops=Shop::where("status",1)->get();
+//        }
+//        //追加 距离
+//        foreach ($shops as  $k=>$v){
+//            $shops[$k]->distance = rand(1000, 5000);
+//            $shops[$k]->estimate_time = ceil($shops[$k]['distance'] / rand(100, 150));
+//
+//        }
+
         //得到所有商铺设置状态为1的显示
         $shops=Shop::where("state",1)->get();
         //追加

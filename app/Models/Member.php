@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Member whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Member whereUsername($value)
  * @mixin \Eloquent
+ * @property int|null $status 默认 1 会员 0非会员
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Member whereStatus($value)
  */
 class Member extends Model
 {

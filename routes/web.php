@@ -95,6 +95,22 @@ Route::domain("admin.elm.com")->namespace("Admin")->group(function (){
     Route::get("nav/index","NavController@index")->name("admin.nav.index");
     Route::any("nav/add","NavController@add")->name("admin.nav.add");
     //endregion
+    //region 抽奖活动管理
+    Route::get("activity/index","ActivityController@index")->name("admin.activity.index");
+    Route::any("activity/add","ActivityController@add")->name("admin.activity.add");
+    Route::any("activity/edit/{id}","ActivityController@edit")->name("admin.activity.edit");
+    Route::get("activity/del/{id}","ActivityController@del")->name("admin.activity.del");
+    Route::get("activity/open/{id}","ActivityController@open")->name("admin.activity.open");
+    //endregion
+    //region 抽奖活动管理
+    Route::get("eventprize/index","EventprizeController@index")->name("admin.eventprize.index");
+    Route::any("eventprize/add","EventprizeController@add")->name("admin.eventprize.add");
+    Route::any("eventprize/edit/{id}","EventprizeController@edit")->name("admin.eventprize.edit");
+    Route::get("eventprize/del/{id}","EventprizeController@del")->name("admin.eventprize.del");
+    //endregion
+    //region 抽奖报名管理
+    Route::get("apply/index","ApplyController@index")->name("admin.apply.index");
+    //endregion
 
 });
 
@@ -145,6 +161,10 @@ Route::domain("shop.elm.com")->namespace("Shop")->group(function (){
     Route::get("order/cday","OrderController@cday")->name("shop.order.cday");
     Route::get("order/cmonth","OrderController@cmonth")->name("shop.order.cmonth");
     Route::get("order/ctotal","OrderController@ctotal")->name("shop.order.ctotal");
+    //endregion
+    //region 抽奖活动列表
+    Route::get("activity/index","ActivityController@index")->name("shop.activity.index");
+    Route::get("activity/sign/{id}","ActivityController@sign")->name("shop.activity.sign");
     //endregion
 
 });

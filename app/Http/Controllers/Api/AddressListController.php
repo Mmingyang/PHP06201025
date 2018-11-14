@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
-class AddressListController extends Controller
+class AddressListController extends BaseController
 {
     //
     public function index(Request $request)

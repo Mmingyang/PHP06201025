@@ -19,6 +19,7 @@ class ActivityController extends BaseController
     {
         $activitys=Activity::all();
 
+
         return view("admin.activity.index",compact("activitys"));
     }
 
@@ -50,7 +51,8 @@ class ActivityController extends BaseController
 //            dd($data);
             $activity=Activity::create($data);
 
-//            Redis::set("event_num:".$activity->id,$activity->num);
+            //将报名限制人数存在redis里面
+            Redis::set("event_num:".$activity->id,$activity->num);
 
             return redirect()->route("admin.activity.index")->with("success","添加成功");
 
@@ -122,6 +124,18 @@ class ActivityController extends BaseController
     //开始抽奖
     public function open(Request $request,$id)
     {
+        //redis 解决活动报名
+        $users=Redis::smembers("event:".$id);
+//        dd($users);
+        foreach ($users as $user){
+//            dd($user);
+            Event_user::insert([
+                'activity_id'=>$id,
+                'user_id'=>$user,
+            ]);
+
+        }
+
         //通过当前活动ID把已经报名的用户ID取出来、
         $userIds = Event_user::where('activity_id',$id)->pluck('user_id')->toArray();
 

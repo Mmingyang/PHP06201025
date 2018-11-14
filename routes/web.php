@@ -15,6 +15,15 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/welcome', function () {
+
+    //页面静态化
+    $html=(string)view('welcome');
+    file_put_contents(public_path('welcome.html'),$html);
+
+    return $html;
+});
+
 Route::get("test", function () {
 
     $shopName="互联网学院";
@@ -164,7 +173,8 @@ Route::domain("shop.elm.com")->namespace("Shop")->group(function (){
     //endregion
     //region 抽奖活动列表
     Route::get("activity/index","ActivityController@index")->name("shop.activity.index");
-    Route::get("activity/sign/{id}","ActivityController@sign")->name("shop.activity.sign");
+    Route::get("activity/sign","ActivityController@sign")->name("shop.activity.sign");
+    Route::get("activity/check/{id}","ActivityController@check")->name("shop.activity.check");
     //endregion
 
 });

@@ -8,31 +8,31 @@ use App\Models\Shop;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
-class ShopController extends Controller
+class ShopController extends BaseController
 {
     // 首页显示
     public function index(Request $request)
     {
-//        $keyword = $request->get("keyword");
-//        // $query = Shop::orderBy("id");
-//
-////        dd($shops);
-//        //内容搜索
-//        if($keyword !== null){
-//            $shops=Shop::where("shop_name","like","%{$keyword}%")->where('status',1)->get();
-//        }else{
-//            $shops=Shop::where("status",1)->get();
-//        }
-//        //追加 距离
-//        foreach ($shops as  $k=>$v){
-//            $shops[$k]->distance = rand(1000, 5000);
-//            $shops[$k]->estimate_time = ceil($shops[$k]['distance'] / rand(100, 150));
-//
-//        }
-
         //得到所有商铺设置状态为1的显示
-        $shops=Shop::where("state",1)->get();
+//        $shops=Shop::where("state",1)->get();
+        $shops=Cache::get("shop.index");
+//        dd($shops);
+        if(!$shops){
+
+            $shops=Shop::where("state",1)->get();
+
+            Cache::set("shop_index",$shops,1);
+        }
+
+        $keyword=$request->get("keyword");
+//        dd($keyword);
+        if ($keyword){
+            $shops = Shop::search($keyword)->get();
+            //dd($shops->toArray());
+        }
+
         //追加
         foreach ($shops as $k=>$v){
 
@@ -48,6 +48,7 @@ class ShopController extends Controller
             $shops[$k]->distance=rand(1000, 5000);
             $shops[$k]->estimate_time=rand(10, 60);
         }
+
 
         return $shops;
     }

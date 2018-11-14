@@ -68,3 +68,9 @@ Route::get("order/check","Api\OrderController@check");
 //region 订单支付
 Route::post("order/zfb","Api\OrderController@zfb");
 //endregion
+//region 微信支付
+Route::get("order/wxPay","Api\OrderController@wxPay");
+Route::get("order/status","Api\OrderController@status");
+Route::post("order/ok","Api\OrderController@ok");
+Route::post("order/clear","Api\OrderController@clear");
+////endregion

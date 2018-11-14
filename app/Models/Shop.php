@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Laravel\Scout\Searchable;
 
 /**
  * App\Models\Shop
@@ -52,6 +53,12 @@ use Illuminate\Support\Facades\DB;
  */
 class Shop extends Model
 {
+    use Searchable;
+
+    public function toSearchableArray()
+    {
+        return $this->only('id','shop_name');
+    }
     //
     public function category()
     {
@@ -61,7 +68,6 @@ class Shop extends Model
     {
         return $this->belongsTo(User::class,"user_id");
     }
-
 
 
 

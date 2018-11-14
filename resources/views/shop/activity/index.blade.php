@@ -33,10 +33,10 @@
             </td>
             <td>
                 @if($event->is_prize!==1)
-                <a href="sign/{{$event->id}}" class="btn btn-danger">报名</a>
+                <a href="{{route('shop.activity.sign',["id"=>$event->id])}}" class="btn btn-danger">报名</a>
                 @endif
                 @if($event->is_prize!==0)
-                <a href="#" class="btn btn-info">查看</a>
+                <a href="check/{{$event->id}}" class="btn btn-info">查看</a>
                 @endif
             </td>
         </tr>

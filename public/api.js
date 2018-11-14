@@ -35,4 +35,8 @@ window.api = {
   pay: '/api/order/zfb',
   // 用户详情接口
   userDetail: '/api/member/detail',
+  // 微信支付
+  wxPay: '/api/order/wxPay',
+  // 订单状态
+  wxStatus: '/api/order/status',
 };

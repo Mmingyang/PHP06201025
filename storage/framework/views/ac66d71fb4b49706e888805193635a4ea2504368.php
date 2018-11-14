@@ -32,10 +32,10 @@
             </td>
             <td>
                 <?php if($event->is_prize!==1): ?>
-                <a href="sign/<?php echo e($event->id); ?>" class="btn btn-danger">报名</a>
+                <a href="<?php echo e(route('shop.activity.sign',["id"=>$event->id])); ?>" class="btn btn-danger">报名</a>
                 <?php endif; ?>
                 <?php if($event->is_prize!==0): ?>
-                <a href="#" class="btn btn-info">查看</a>
+                <a href="check/<?php echo e($event->id); ?>" class="btn btn-info">查看</a>
                 <?php endif; ?>
             </td>
         </tr>

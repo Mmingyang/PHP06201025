@@ -10,6 +10,10 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Shop;
 use App\Models\User;
+use EasyWeChat\Foundation\Application;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\LabelAlignment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -179,61 +183,170 @@ class OrderController extends Controller
         $order->status=1;
         $order->save();
 
-        //发送邮件
-        //通过订单得到店铺名
-        $shopId=$order->shop_id;
-//        dd($shopId);
-
-
-        //查当前商铺用户ID
-        $user=Shop::where("id",$shopId)->first()->toArray();
-//        dd($user);
-        //得到用户ID
-        $userId=$user['user_id'];
-//        dd($userId);
-        //通过用户id找邮箱
-        $em=User::where("id",$userId)->first()->toArray();
-//        dd($em);
-        $email=$em['email'];
-        //用户名字
-        $name =$em['name'];
-        $shopName=$name;
-        $to=$email;
-        $subject=$shopName.'订单通知';
-        \Illuminate\Support\Facades\Mail::send(
-            'emails.order',
-            compact("shopName"),
-            function ($message) use($to, $subject) {
-                $message->to($to)->subject($subject);
-            }
-        );
-
-        //得到用户电话
-        $tel=$order->tel;
-
-        //发送短信
-        $code=$name;
-//        dd($code);
-        $config = [
-            'access_key' => env("ALIYUN_ACCESS_ID"),
-            'access_secret' => env("ALIYUN_ACCESS_KEY"),
-            'sign_name' => '个人学习分享',
-        ];
-
-        $sms=New AliSms();
-//        dd($tel);
-
-        $response = $sms->sendSms($tel,"SMS_150572199",['name'=>$code],$config);
-//        dd($response);
+//        //发送邮件
+//        //通过订单得到店铺名
+//        $shopId=$order->shop_id;
+////        dd($shopId);
+//
+//
+//        //查当前商铺用户ID
+//        $user=Shop::where("id",$shopId)->first()->toArray();
+////        dd($user);
+//        //得到用户ID
+//        $userId=$user['user_id'];
+////        dd($userId);
+//        //通过用户id找邮箱
+//        $em=User::where("id",$userId)->first()->toArray();
+////        dd($em);
+//        $email=$em['email'];
+//        //用户名字
+//        $name =$em['name'];
+//        $shopName=$name;
+//        $to=$email;
+//        $subject=$shopName.'订单通知';
+//        \Illuminate\Support\Facades\Mail::send(
+//            'emails.order',
+//            compact("shopName"),
+//            function ($message) use($to, $subject) {
+//                $message->to($to)->subject($subject);
+//            }
+//        );
+//
+//        //得到用户电话
+//        $tel=$order->tel;
+//
+//        //发送短信
+//        $code=$name;
+////        dd($code);
+//        $config = [
+//            'access_key' => env("ALIYUN_ACCESS_ID"),
+//            'access_secret' => env("ALIYUN_ACCESS_KEY"),
+//            'sign_name' => '个人学习分享',
+//        ];
+//
+//        $sms=New AliSms();
+////        dd($tel);
+//
+//        $response = $sms->sendSms($tel,"SMS_150572199",['name'=>$code],$config);
+////        dd($response);
 
         return[
             'status'=>'true',
             'message'=>'支付成功',
         ];
 
+    }
+
+
+    //微信支付
+    public function wxPay()
+    {
+        //获取订单id
+        $id=\request()->get("id");
+        //得到订单
+        $orderModel=Order::find($id);
+
+        //配置
+        $options=config("wechat");
+        $app=new Application($options);
+
+        $payment=$app->payment;
+        //生成订单
+        $attributes = [
+            'trade_type' => 'NATIVE', // JSAPI，NATIVE，APP...
+            'body' => '饿了没点餐平台支付',
+            'detail' => '饿了没点餐平台支付嘤嘤嘤',
+            'out_trade_no' => $orderModel->order_code,
+            'total_fee' => $orderModel->total * 100, // 单位：分
+            'notify_url' => 'http://www.mys8178.cn/api/order/ok', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+        ];
+
+        $order=new \EasyWeChat\Payment\Order($attributes);
+
+        //统一下单
+        $result = $payment->prepare($order);
+//        dd($result);
+        if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
+            //拿到预支付链接
+            $codeUrl=$result->code_url;
+
+            $qrCode = new QrCode($codeUrl);
+
+
+            $qrCode->setSize(250);//大小
+            $qrCode
+                ->setMargin(10)//外边框
+                ->setEncoding('UTF-8')//编码
+                ->setErrorCorrectionLevel(ErrorCorrectionLevel::HIGH)//容错级别
+                ->setForegroundColor(['r' => 0, 'g' => 0, 'b' => 0])//码颜色
+                ->setBackgroundColor(['r' => 255, 'g' => 255, 'b' => 255])//背景色
+                ->setLabel('微信扫码支付', 16, public_path("font/msyh.ttc"), LabelAlignment::CENTER)
+                ->setLogoPath(public_path("images/yyl.png"))//LOGO
+                ->setLogoWidth(100);//LOGO大小
+
+            header('Content-Type: '.$qrCode->getContentType());
+            exit($qrCode->writeString());
+
+        }else{
+            return $result;
+        }
 
     }
 
+    public function status()
+    {
+        $id = \request()->get("id");
+        $order = Order::find($id);
+//        dd($order);
+        return $order;
+    }
+
+
+    public function ok()
+    {
+        //配置
+        $options = config("wechat");
+        //dd($options);
+        $app= new Application($options);
+        //回调
+        $response = $app->payment->handleNotify(function ($notify, $successful) {
+            // 使用通知里的 "微信支付订单号" 或者 "商户订单号" 去自己的数据库找到订单
+            // $order = 查询订单($notify->out_trade_no);
+            $order=Order::where("order_code",$notify->out_trade_no)->first();
+            if (!$order) { // 如果订单不存在
+                return 'Order not exist.'; // 告诉微信，我已经处理完了，订单没找到，别再通知我了
+            }
+            // 如果订单存在
+            // 检查订单是否已经更新过支付状态
+            if ($order->status==1) { // 假设订单字段“支付时间”不为空代表已经支付
+                return true; // 已经支付成功了就不再更新了
+            }
+            // 用户是否支付成功
+            if ($successful) {
+                // 不是已经支付状态则修改为已经支付状态
+                //$order->paid_at = time(); // 更新支付时间为当前时间
+                $order->status = 1;
+            }
+            $order->save(); // 保存订单
+            return true; // 返回处理完成
+        });
+        return $response;
+    }
+
+
+    //超时未支付的订单
+    public function clear()
+    {
+        //找到状态为0 未支付的订单
+        $order=Order::where("status",0)->where("created_at","<",date("Y-m-d H:i:s",time()-15*60))->get();
+
+        foreach ($order as $order){
+            $order->status=-1;
+            $order->save();
+
+        }
+
+    }
 
 
 

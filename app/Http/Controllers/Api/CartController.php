@@ -7,7 +7,7 @@ use App\Models\Menu;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class CartController extends Controller
+class CartController extends BaseController
 {
     //购物车列表显示
     public function index(Request $request)
